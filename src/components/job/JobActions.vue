@@ -2,14 +2,16 @@
   <div class="job-actions">
     <button
       class="reject"
-      @click="$emit('reject')"
+      :disabled="loading"
+      @click="$emit('reject-job')"
     >
       No Thanks
     </button>
     
     <button
       class="confirm"
-      @click="$emit('accept')"
+      :disabled="loading"
+      @click="$emit('accept-job')"
     >
       I'll Take it
     </button>
@@ -19,6 +21,12 @@
 <script>
   export default {
     name: 'JobActionsComponent',
+    props: {
+      loading: {
+        type: Boolean,
+        required: true,
+      }
+    },
   }
 </script>
 

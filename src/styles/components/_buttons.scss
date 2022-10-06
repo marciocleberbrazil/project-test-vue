@@ -3,7 +3,7 @@ button {
   padding: $space $space-xs;
   border-width: 2px;
   border-style: solid;
-  border-radius: 4px;
+  border-radius: $rounded;
   font-size: 1rem;
   color: $black;
   cursor: pointer;
@@ -18,5 +18,23 @@ button {
     border-color: $gray;
     font-weight: bold;
     color: $gray;
+  }
+  
+  &.success {
+    color: $success-dark;
+    background-color: $success-light;
+    border-color: $success-dark;
+  }
+  
+  &.danger {
+    color: $danger-dark;
+    background-color: $danger-light;
+    border-color: $danger-dark;
+  }
+  
+  &.warning {
+    color: $warning-dark;
+    background-color: $warning-light;
+    border-color: $warning-dark;
   }
 }

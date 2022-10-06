@@ -4,14 +4,24 @@
     <JobSummary/>
     <JobDetails/>
     <JobActions
-      @accept="$emit('accept')"
+      :loading="loading"
+      @accept-job="acceptJob"
+      @reject-job="rejectJob"
+    />
+    <JobFeedback
+      :message="feedback.message"
+      :styling="feedback.styling"
+      @close-feedback="closeFeedback"
     />
   </div>
 </template>
 
 <script>
-  import JobActions from './JobActions.vue';
+  import { computed } from 'vue';
+import { acceptJob, getWorkerMatches, rejectJob } from '../../services/worker-service';
+import JobActions from './JobActions.vue';
 import JobDetails from './JobDetails/JobDetails.vue';
+import JobFeedback from './JobFeedback.vue';
 import JobHero from './JobHero.vue';
 import JobSummary from './JobSummary.vue';
   
@@ -22,6 +32,114 @@ import JobSummary from './JobSummary.vue';
       JobHero,
       JobDetails,
       JobSummary,
+      JobFeedback,
+    },
+    inject: ['worker'],
+    provide () {
+      return {
+        job: computed(() => this.job),
+      };
+    },
+    data () {
+      return {
+        job: null,
+        loading: false,
+        matches: null,
+        feedback: {
+          message: null,
+          styling: null,
+        }
+      };
+    },
+    methods: {
+      async loadData() {
+        try {
+          this.loading = true;
+          
+          this.matches = await getWorkerMatches(this.worker.workerId);
+          
+          this.job = this.matches[0];
+
+        } catch (err) {
+          console.error(err);
+        } finally {
+          this.loading = false;
+        }
+      },
+      getNextJob() {
+        this.job = this.matches.find((elem) => elem.jobId !== this.job.jobId);
+      },
+      async acceptJob () {
+        try {
+          this.loading = true;
+          
+          const response = await acceptJob(this.worker.workerId, this.job.jobId);
+          
+          if (!response.success) {
+            throw {
+              message: response.message,
+              errorCode: response.errorCode,
+            }
+          }
+          
+          this.openFeedback(
+            'You sucessfully applied to this job!',
+            'success',
+          );
+          
+        } catch (err) {
+          this.openFeedback(
+            err.message || 'Something went wrong! Try it again.',
+            err.message ? 'danger' : 'warning',
+          );
+        } finally {
+          this.loading = false;
+        }
+      },
+      async rejectJob () {
+        try {
+          this.loading = true;
+          
+          const response = await rejectJob(this.worker.workerId, this.job.jobId);
+          
+          if (!response.success) {
+            throw {
+              message: response.message,
+              errorCode: response.errorCode,
+            }
+          }
+          
+          this.openFeedback(
+            'You rejected this job!',
+            'warning',
+          );
+          
+        } catch (err) {
+          this.openFeedback(
+            err.message || 'Something went wrong! Try it again.',
+            err.message ? 'danger' : 'warning',
+          );
+        } finally {
+          this.loading = false;
+        }
+      },
+      openFeedback (message, styling) {
+        this.feedback = {
+          message: message,
+          styling: styling,
+        };
+      },
+      closeFeedback () {
+        this.feedback = {
+          message: null,
+          styling: null,
+        };
+        
+        this.getNextJob();
+      }
+    },
+    async mounted () {
+      await this.loadData();
     },
   }
 </script>
@@ -29,6 +147,7 @@ import JobSummary from './JobSummary.vue';
 <style lang="scss" scoped>
   @import '../../styles/core/colors';
 .job {
+  position: relative;
   display: flex;
   flex-flow: column;
   flex: 1;

@@ -22,6 +22,7 @@
     </JobDetailsItem>
     
     <JobDetailsItem
+      v-if="getRequirements"
       icon="fa-screwdriver-wrench"
       title="Requirements"
     >
@@ -30,7 +31,7 @@
           :key="`requirement_${index}`"
           v-for="(requirement, index) of getRequirements"
         >
-          {{ requirement }}
+          <p>{{ requirement }}</p>
         </li>
       </ul>
     </JobDetailsItem>
@@ -61,7 +62,7 @@ import JobDetailsItem from './JobDetailsItem.vue';
           const endDate = convertDateFromUtcToZonedTime(shift.endDate, this.job?.company.address.zoneId);
           
           return getFormattedDate(startDate, endDate);
-        })?.splice(0, 2);
+        });
       },
       
       getLocation () {

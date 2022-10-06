@@ -3,6 +3,7 @@
     <div class="icon">
       <font-awesome-icon
         :icon="getIcon"
+        size="lg"
       />
     </div>
     
@@ -19,6 +20,7 @@
     >
       <font-awesome-icon
         icon="fa-solid fa-chevron-right"
+        size="lg"
       />
     </div>
   </li>
@@ -49,6 +51,8 @@
 </script>
 
 <style lang="scss" scoped>
+  @import '../../../styles/core/spacing';
+  
   .icon {
     flex: 0 0 25px;
     
@@ -61,7 +65,36 @@
     flex: 1;
     
     strong {
+      display: block;
+      margin-bottom: $space-xxs;
+      font-size: 0.9rem;
       font-weight: bold;
+    }
+    
+    small {
+      font-size: 0.7rem;
+    }
+    
+    p {
+      margin-bottom: $space-xs;
+      font-size: 0.9rem;
+    }
+    
+    ul {
+      li {
+        padding: 0 0 $space-xxs;
+        border-bottom: none;
+        
+        p {
+          margin: 0;
+        }
+        
+        &::before {
+          content: '\2014';
+          position: absolute;
+          margin-left: -20px;
+        }
+      }
     }
   }
 </style>

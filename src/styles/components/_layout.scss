@@ -12,7 +12,31 @@
   main {
     display: flex;
     flex: 1;
-    padding: $space-sm;
     background-color: $gray;
+    
+    .main-content {
+      display: flex;
+      width: 100%;
+      padding: $space-sm;
+      margin-top: 53px; 
+    }
+  }
+  
+  @media (min-width: $xl) {
+    .header {
+      .content {
+        max-width: 1200px;
+        margin: 0 auto;
+        width: 100%;
+      }
+    }
+    
+    main {
+      .main-content {
+        max-width: 1200px;
+        margin: 53px auto 0;
+        width: 100%;
+      }
+    }
   }
 }

@@ -19,3 +19,23 @@ export const getWorkerProfile = async (workerId) => {
     throw err.response || err;
   }
 };
+
+export const acceptJob = async (workerId, jobId) => {
+  try {
+    const response = await axios.get(`/worker/${workerId}/job/${jobId}/accept`);
+    
+    return response.data;
+  } catch (err) {
+    throw err.response || err;
+  }
+};
+
+export const rejectJob = async (workerId, jobId) => {
+  try {
+    const response = await axios.get(`/worker/${workerId}/job/${jobId}/reject`);
+    
+    return response.data;
+  } catch (err) {
+    throw err.response || err;
+  }
+};

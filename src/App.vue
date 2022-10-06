@@ -2,7 +2,11 @@
   <div id="app">
     <Header/>
     <main>
-      <Job/>
+      <div class="main-content">
+        <Job
+          v-if="worker"
+        />
+      </div>
     </main>
   </div>
 </template>
@@ -11,13 +15,12 @@
 import { computed } from 'vue';
 import Header from './components/Header.vue';
 import Job from './components/job/Job.vue';
-import { getWorkerMatches, getWorkerProfile } from './services/worker-service';
+import { getWorkerProfile } from './services/worker-service';
 
 export default {
   name: 'App',
   provide () {
     return {
-      job: computed(() => this.job),
       worker: computed(() => this.worker),
     };
   },
@@ -30,21 +33,14 @@ export default {
       loading: false,
       workerId: '7f90df6e-b832-44e2-b624-3143d428001f',
       worker: null,
-      job: null,
     };
   },
   methods: {
     async loadData() {
       try {
+        
         this.loading = true;
-        
-        const result = await Promise.all([
-          getWorkerProfile(this.workerId),
-          getWorkerMatches(this.workerId)
-        ]);
-        
-        this.worker = result[0];
-        this.job = result[1][Math.random() < 0.5 ? 0 : 1];
+        this.worker = await getWorkerProfile(this.workerId);
 
       } catch (err) {
         console.error(err);
@@ -58,8 +54,3 @@ export default {
   },
 }
 </script>
-
-<style>
-#app {
-}
-</style>
