@@ -15,7 +15,8 @@
     <JobDetailsItem
       icon="fa-location-dot"
       title="Location"
-      navigateTo="go to somewhere"
+      :isClickable="true"
+      @call-to-action="gotoMaps"
     >
       <p>{{ getLocation.address }}</p>
       <small>{{ getLocation.distance }}</small>
@@ -54,6 +55,11 @@ import JobDetailsItem from './JobDetailsItem.vue';
     inject: ['job'],
     components: {
       JobDetailsItem,
+    },
+    methods: {
+      gotoMaps () {
+        console.log('Show maps');
+      },
     },
     computed: {
       getShits () {

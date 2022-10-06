@@ -1,5 +1,7 @@
 <template>
-  <li>
+  <li
+    @click="callToAction"
+  >
     <div class="icon">
       <font-awesome-icon
         :icon="getIcon"
@@ -15,7 +17,7 @@
     </div>
     
     <div
-      v-if="navigateTo"
+      v-if="isClickable"
       class="icon"
     >
       <font-awesome-icon
@@ -38,14 +40,22 @@
         type: String,
         required: true,
       },
-      navigateTo: {
-        type: String,
+      isClickable: {
+        type: Boolean,
+        default: () => false,
       }
     },
     computed: {
       getIcon () {
         return `fa-solid ${this.icon}`;
       }
+    },
+    methods: {
+      callToAction () {
+        if (this.isClickable) {
+         this.$emit('call-to-action');
+        }
+      },
     }
   }
 </script>
