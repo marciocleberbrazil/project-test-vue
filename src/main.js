@@ -13,6 +13,8 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 /* import specific icons */
 import { faCalendarDays, faChevronRight, faCircleUser, faLocationDot, faScrewdriverWrench } from '@fortawesome/free-solid-svg-icons';
 
+import store from './store'
+
 /* add icons to the library */
 library.add([faCalendarDays, faLocationDot, faScrewdriverWrench, faCircleUser, faChevronRight]);
 
@@ -22,5 +24,6 @@ Vue.component('font-awesome-icon', FontAwesomeIcon);
 Vue.config.productionTip = false;
 
 new Vue({
-  render: h => h(App),
+  store,
+  render: h => h(App)
 }).$mount('#app')
