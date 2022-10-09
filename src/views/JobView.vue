@@ -18,15 +18,15 @@
 
 <script>
   import { computed } from 'vue';
-import { acceptJob, getWorkerMatches, rejectJob } from '../../services/worker-service';
-import JobActions from './JobActions.vue';
-import JobDetails from './JobDetails/JobDetails.vue';
-import JobFeedback from './JobFeedback.vue';
-import JobHero from './JobHero.vue';
-import JobSummary from './JobSummary.vue';
+import JobActions from '../components/job/JobActions.vue';
+import JobDetails from '../components/job/JobDetails/JobDetails.vue';
+import JobFeedback from '../components/job/JobFeedback.vue';
+import JobHero from '../components/job/JobHero.vue';
+import JobSummary from '../components/job/JobSummary.vue';
+import { acceptJob, getWorkerMatches, rejectJob } from '../services/worker-service';
   
   export default {
-    name: 'JobComponent',
+    name: 'JobView',
     components: {
       JobActions,
       JobHero,
@@ -145,7 +145,7 @@ import JobSummary from './JobSummary.vue';
 </script>
 
 <style lang="scss" scoped>
-  @import '../../styles/core/colors';
+  @import '../styles/core/colors';
 .job {
   position: relative;
   display: flex;

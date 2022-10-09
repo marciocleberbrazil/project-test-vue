@@ -1,15 +1,28 @@
 const { utcToZonedTime, format } = require('date-fns-tz');
 
-export const convertCentsToDollar = (target) => target > 0 ? (target / 100).toFixed(2) : 0;
+export const convertCentsToDollar = (value) => !value || isNaN(value) || value <= 0 ? null : (value / 100).toFixed(2);
 
 export const convertDateFromUtcToZonedTime = (utcDate, timeZone) => {
+  if (!utcDate || !timeZone) {
+    return null;
+  }
+  
   const date = new Date(utcDate);
-  return utcToZonedTime(date, timeZone);
+  
+  if (!isValidDate(date)) {
+    return null;
+  }
+  
+  return utcToZonedTime(date, timeZone); 
 };
 
-export const getFormattedDate = (startDate, endDate, timeZone) => {
-  const startDateFormatted = format(startDate, 'LLL d, E H:mm a', { timeZone });
-  const endDateFormatted = format(endDate, 'H:mm a ', { timeZone });
+export const getFormattedDate = (startDate, endDate) => {
+  if (!startDate || !endDate || !isValidDate(startDate) || !isValidDate(endDate)) {
+    return null;
+  }
+  
+  const startDateFormatted = format(startDate, 'LLL d, E H:mm a');
+  const endDateFormatted = format(endDate, 'H:mm a ');
   
   return `${startDateFormatted} - ${endDateFormatted} PDT`.toUpperCase();
 };
@@ -21,4 +34,8 @@ export const formatUSAPhoneNumber = (phoneNumberString) => {
     return `(${match[1]}) ${match[2]} ${match[3]}`;
   }
   return null;
+};
+
+const isValidDate = (d) => {
+  return d instanceof Date && !isNaN(d);
 };

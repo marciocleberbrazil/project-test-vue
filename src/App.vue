@@ -3,7 +3,7 @@
     <Header/>
     <main>
       <div class="main-content">
-        <Job
+        <JobView
           v-if="worker"
         />
       </div>
@@ -14,8 +14,8 @@
 <script>
 import { computed } from 'vue';
 import Header from './components/Header.vue';
-import Job from './components/job/Job.vue';
 import { getWorkerProfile } from './services/worker-service';
+import JobView from './views/JobView.vue';
 
 export default {
   name: 'App',
@@ -26,7 +26,7 @@ export default {
   },
   components: {
     Header,
-    Job,
+    JobView,
   },
   data () {
     return {
